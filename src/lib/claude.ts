@@ -338,7 +338,7 @@ export async function evaluateApplication(
 
   const message = await client.messages.create({
     model: "claude-opus-4-6",
-    max_tokens: 12000,
+    max_tokens: 62000,
     thinking: {
       type: "enabled",
       budget_tokens: 50000,
