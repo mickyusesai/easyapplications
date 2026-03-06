@@ -1,6 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-const client = new Anthropic();
+const client = new Anthropic({
+  timeout: 15 * 60 * 1000, // 15 minutes — extended thinking can be slow
+});
 
 export type ProjectType = "youth_exchange" | "training_course";
 
