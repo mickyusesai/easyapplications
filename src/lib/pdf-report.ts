@@ -174,10 +174,14 @@ export async function generateReport(
     let pageNum = 1;
 
     // ── Hook: subsequent pages get header + footer ──
+    let drawingChrome = false;
     doc.on("pageAdded", () => {
+      if (drawingChrome) return; // prevent infinite recursion
+      drawingChrome = true;
       pageNum++;
       drawSubsequentPageHeader(doc, pageWidth);
       drawPageFooter(doc, pageWidth, pageNum);
+      drawingChrome = false;
     });
 
     // ── First page header ──
