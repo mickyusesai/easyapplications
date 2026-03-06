@@ -336,7 +336,8 @@ export async function evaluateApplication(
       ? YOUTH_EXCHANGE_SYSTEM_PROMPT
       : TRAINING_COURSE_SYSTEM_PROMPT;
 
-  const message = await client.messages.create({
+  // Use streaming because extended thinking requests can exceed 10 min
+  const stream = client.messages.stream({
     model: "claude-opus-4-6",
     max_tokens: 62000,
     thinking: {
@@ -351,6 +352,8 @@ export async function evaluateApplication(
       },
     ],
   });
+
+  const message = await stream.finalMessage();
 
   const textBlocks = message.content.filter(
     (block): block is Anthropic.TextBlock => block.type === "text"
