@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         message:
-          "Your application is being evaluated. Check your email in about 5 minutes.",
+          "Your application is being evaluated. Check your email in about 10 minutes.",
       },
       { status: 202 }
     );

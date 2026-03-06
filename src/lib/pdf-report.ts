@@ -82,6 +82,8 @@ function drawPageFooter(
 ) {
   const savedY = doc.y;
   const savedX = doc.x;
+  const savedBottom = doc.page.margins.bottom;
+  doc.page.margins.bottom = 0; // prevent auto-pagination when drawing near bottom
 
   // Gradient accent line
   drawGradientBar(doc, 50, FOOTER_Y, pageWidth - 100, 2);
@@ -100,7 +102,7 @@ function drawPageFooter(
       lineBreak: false,
     });
 
-  // Disclaimer (single line, no wrapping to prevent page overflow)
+  // Disclaimer
   doc
     .fontSize(6.5)
     .fillColor(BRAND.light)
@@ -111,6 +113,7 @@ function drawPageFooter(
       { width: pageWidth - 100, align: "center", lineBreak: false }
     );
 
+  doc.page.margins.bottom = savedBottom;
   doc.y = savedY;
   doc.x = savedX;
 }
@@ -119,6 +122,9 @@ function drawSubsequentPageHeader(
   doc: PDFKit.PDFDocument,
   pageWidth: number
 ) {
+  const savedBottom = doc.page.margins.bottom;
+  doc.page.margins.bottom = 0; // prevent auto-pagination during chrome drawing
+
   // Thin gradient bar
   drawGradientBar(doc, 0, 0, pageWidth, 3);
 
@@ -143,6 +149,8 @@ function drawSubsequentPageHeader(
     .strokeColor(BRAND.border)
     .lineWidth(0.5)
     .stroke();
+
+  doc.page.margins.bottom = savedBottom;
 
   // Reset content position
   doc.y = CONTENT_TOP_OTHER_PAGES;
@@ -185,6 +193,10 @@ export async function generateReport(
     });
 
     // ── First page header ──
+    // Temporarily disable bottom margin to prevent auto-pagination during chrome
+    const savedBottom = doc.page.margins.bottom;
+    doc.page.margins.bottom = 0;
+
     // Gradient accent bar
     drawGradientBar(doc, 0, 0, pageWidth, 6);
 
@@ -220,15 +232,16 @@ export async function generateReport(
       .stroke();
 
     // Document info
-    doc.fontSize(14).fillColor(BRAND.heading).text("Evaluation Report", 50, 72);
+    doc.fontSize(14).fillColor(BRAND.heading).text("Evaluation Report", 50, 72, { lineBreak: false });
     doc
       .fontSize(9)
       .fillColor(BRAND.light)
-      .text(`Document: ${fileName}`, 50, 90);
+      .text(`Document: ${fileName}`, 50, 90, { lineBreak: false });
     doc.text(
       `Generated: ${new Date().toLocaleDateString("en-GB")}`,
       50,
-      102
+      102,
+      { lineBreak: false }
     );
 
     // Second separator before content
@@ -242,7 +255,8 @@ export async function generateReport(
     // First page footer
     drawPageFooter(doc, pageWidth, 1);
 
-    // Position for content
+    // Restore bottom margin and position for content
+    doc.page.margins.bottom = savedBottom;
     doc.y = CONTENT_TOP_FIRST_PAGE;
     doc.x = 50;
 

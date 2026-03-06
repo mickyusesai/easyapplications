@@ -113,7 +113,7 @@ export default function UploadSection() {
         </p>
         <p className="text-green-600 text-sm">
           You&apos;ll receive a detailed PDF evaluation report at{" "}
-          <strong>{email}</strong> within approximately 5 minutes.
+          <strong>{email}</strong> within approximately 10 minutes.
         </p>
         <button
           onClick={() => {
