@@ -17,10 +17,10 @@ const BRAND = {
 } as const;
 
 const RATING_COLORS: Record<string, string> = {
-  vg: "#16a34a",
-  g: "#2563eb",
-  f: "#d97706",
-  w: "#dc2626",
+  vg: "#1A1A6E", // brand heading — dark navy for top rating
+  g: "#3C3CE6",  // brand primary — indigo blue
+  f: "#4F5CE8",  // brand subheading — medium blue-violet
+  w: "#999999",  // brand muted — grey for weak
 };
 
 const RATING_LABELS: Record<string, string> = {
@@ -105,7 +105,6 @@ export async function generateReport(
     // Start content below where the first-page header will be stamped
     doc.y = CONTENT_TOP_FIRST_PAGE;
     doc.x = 50;
-    let isFirstPage = true;
 
     const lines = markdownContent.split("\n");
     for (const line of lines) {
@@ -114,7 +113,6 @@ export async function generateReport(
         doc.addPage();
         doc.y = CONTENT_TOP_OTHER_PAGES;
         doc.x = 50;
-        isFirstPage = false;
       }
 
       // Rating lines: **Rating: vg** → colored badge
@@ -157,7 +155,7 @@ export async function generateReport(
         const cleanLine = line.replace(/\*\*/g, "").replace(/^[-*]\s*/, "");
         const passes =
           /:\s*MET\s*$/i.test(line) || /PASSES\s+funding/i.test(line);
-        const color = passes ? "#16a34a" : "#dc2626";
+        const color = passes ? BRAND.primary : "#dc2626";
         doc.fontSize(10).fillColor(color).text(cleanLine, { indent: 10 });
         continue;
       }
@@ -171,6 +169,12 @@ export async function generateReport(
           .text(line.replace("### ", ""));
         doc.moveDown(0.2);
       } else if (line.startsWith("## ")) {
+        // Start each major section on a new page (unless near top of page already)
+        if (doc.y > CONTENT_TOP_OTHER_PAGES + 40) {
+          doc.addPage();
+          doc.y = CONTENT_TOP_OTHER_PAGES;
+          doc.x = 50;
+        }
         doc.moveDown(0.5);
         doc
           .moveTo(50, doc.y)

@@ -10,6 +10,16 @@ interface EvaluationInput {
   projectType: ProjectType;
 }
 
+/** Derive a clean project name from the uploaded filename for the PDF attachment. */
+function deriveProjectName(fileName: string): string {
+  // Strip extension
+  const base = fileName.replace(/\.[^.]+$/, "");
+  // Remove common duplicate markers like "(1)", " (2)" etc.
+  const cleaned = base.replace(/\s*\(\d+\)/g, "").trim();
+  // Replace spaces and special chars with hyphens, collapse multiples
+  return cleaned.replace(/[^a-zA-Z0-9-]+/g, "-").replace(/-{2,}/g, "-").replace(/^-|-$/g, "");
+}
+
 export async function processEvaluation({
   email,
   buffer,
@@ -36,11 +46,12 @@ export async function processEvaluation({
 
   // Step 3: Generate PDF report
   console.log("[EasyApp] Generating PDF report...");
+  const projectName = deriveProjectName(fileName);
   const reportPdf = await generateReport(evaluation.content, fileName);
 
   // Step 4: Send email
   console.log("[EasyApp] Sending email to", email);
-  await sendReportEmail(email, reportPdf, fileName);
+  await sendReportEmail(email, reportPdf, fileName, projectName);
 
   console.log(
     `[EasyApp] Evaluation complete for ${fileName} (${email})`
