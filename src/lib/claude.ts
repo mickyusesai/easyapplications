@@ -261,6 +261,8 @@ OUTPUT FORMAT
 
 Structure your output as clean Markdown with the following sections:
 
+**Project Name: [The actual name/title of the project as stated in the application]**
+
 # Erasmus+ Youth Exchange — Evaluation Report
 
 ## Section 1: Relevance, Rationale and Impact (max. 30 points)
@@ -333,7 +335,7 @@ Provide a concise evaluation in clean Markdown format. Be critical, constructive
 
 OUTPUT FORMAT
 
-Structure your output as clean Markdown following the same section structure with scores and ratings.
+Structure your output as clean Markdown following the same section structure with scores and ratings. Start with a **Project Name: [name]** line before the main heading.
 
 LENGTH GUIDELINES
 - Each criterion assessment: 2–3 sentences maximum.
@@ -343,6 +345,18 @@ LENGTH GUIDELINES
 
 export interface EvaluationResult {
   content: string;
+  projectName: string;
+}
+
+/** Extract the **Project Name: ...** line from the evaluation output. */
+function parseProjectName(text: string): { projectName: string; content: string } {
+  const match = text.match(/^\*\*Project Name:\s*(.+?)\*\*\s*\n?/m);
+  if (match) {
+    const projectName = match[1].trim();
+    const content = text.replace(match[0], "").trimStart();
+    return { projectName, content };
+  }
+  return { projectName: "Erasmus-Application", content: text };
 }
 
 export async function evaluateApplication(
@@ -376,7 +390,8 @@ export async function evaluateApplication(
   const textBlocks = message.content.filter(
     (block): block is Anthropic.TextBlock => block.type === "text"
   );
-  const content = textBlocks.map((block) => block.text).join("\n");
+  const rawContent = textBlocks.map((block) => block.text).join("\n");
 
-  return { content };
+  const { projectName, content } = parseProjectName(rawContent);
+  return { content, projectName };
 }

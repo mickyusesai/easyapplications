@@ -169,12 +169,6 @@ export async function generateReport(
           .text(line.replace("### ", ""));
         doc.moveDown(0.2);
       } else if (line.startsWith("## ")) {
-        // Start each major section on a new page (unless near top of page already)
-        if (doc.y > CONTENT_TOP_OTHER_PAGES + 40) {
-          doc.addPage();
-          doc.y = CONTENT_TOP_OTHER_PAGES;
-          doc.x = 50;
-        }
         doc.moveDown(0.5);
         doc
           .moveTo(50, doc.y)
