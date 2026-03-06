@@ -242,7 +242,7 @@ IMPORTANT REMINDERS
 
 * Read the ENTIRE application before beginning your assessment
 * Every rating code (vg/g/f/w) MUST be justified by specific references to the application content
-* Comments should be minimum 2 sentences per criterion; more for complex or problematic criteria
+* Comments should be 2–3 sentences per criterion. Be concise: one sentence for the key finding, one for evidence, optionally one specific recommendation. Avoid repetition and generic filler.
 * Flag contradictions explicitly — this is one of the most valuable aspects of expert assessment
 * Do not be afraid to score "w" (weak) if a criterion is genuinely not addressed
 * Do not inflate scores to be kind — accurate assessment helps applicants improve
@@ -307,7 +307,13 @@ Structure your output as clean Markdown with the following sections:
 
 ## Budget Remarks
 
-[Budget observations or "No budget remarks applicable based on the information available."]`;
+[Budget observations or "No budget remarks applicable based on the information available."]
+
+LENGTH GUIDELINES
+- Each criterion assessment: 2–3 sentences maximum. Focus on the single most important strength and the single most important weakness. Do not repeat information already captured in the rating code.
+- General Remarks: 1 brief overall assessment sentence + 2–5 numbered improvement points (1–2 sentences each) + 1 closing sentence.
+- Budget Remarks: 1–3 sentences or the standard "no remarks" line.
+- Target total output length: approximately 1500–2000 words. Do not exceed 2500 words.`;
 
 const TRAINING_COURSE_SYSTEM_PROMPT = `You are an expert evaluator for Erasmus+ Key Action 1: Training Course applications managed by National Agencies. You have extensive experience assessing grant applications in the youth field.
 
@@ -317,11 +323,17 @@ NOTE: The full Training Course evaluation criteria are being prepared and will b
 - Section 2: Quality of Project Design and Implementation (max 40 points)
 - Section 3: Quality of Project Management (max 30 points)
 
-Provide a thorough evaluation in clean Markdown format. Be critical, constructive, and specific. Address the applicant as "you/your".
+Provide a concise evaluation in clean Markdown format. Be critical, constructive, and specific. Address the applicant as "you/your".
 
 OUTPUT FORMAT
 
-Structure your output as clean Markdown following the same section structure with scores and ratings.`;
+Structure your output as clean Markdown following the same section structure with scores and ratings.
+
+LENGTH GUIDELINES
+- Each criterion assessment: 2–3 sentences maximum.
+- General Remarks: 1 overall sentence + 2–5 improvement points (1–2 sentences each) + 1 closing sentence.
+- Budget Remarks: 1–3 sentences or "No budget remarks applicable based on the information available."
+- Target total output length: approximately 1500–2000 words. Do not exceed 2500 words.`;
 
 export interface EvaluationResult {
   content: string;
