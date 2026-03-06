@@ -15,11 +15,19 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const email = formData.get("email") as string;
+    const projectType = formData.get("projectType") as string;
     const file = formData.get("file") as File;
 
-    if (!email || !file) {
+    if (!email || !file || !projectType) {
       return NextResponse.json(
-        { error: "Email and file are required." },
+        { error: "Email, project type, and file are required." },
+        { status: 400 }
+      );
+    }
+
+    if (!["youth_exchange", "training_course"].includes(projectType)) {
+      return NextResponse.json(
+        { error: "Invalid project type." },
         { status: 400 }
       );
     }
@@ -51,7 +59,7 @@ export async function POST(request: NextRequest) {
     const fileName = file.name;
 
     // Fire-and-forget: start processing in background
-    processEvaluation({ email, buffer, fileName }).catch((err) => {
+    processEvaluation({ email, buffer, fileName, projectType: projectType as "youth_exchange" | "training_course" }).catch((err) => {
       console.error("[EasyApp] Background processing failed:", err);
     });
 

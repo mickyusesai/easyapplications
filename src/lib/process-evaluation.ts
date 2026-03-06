@@ -1,5 +1,5 @@
 import { extractText } from "./document-parser";
-import { evaluateApplication } from "./claude";
+import { evaluateApplication, type ProjectType } from "./claude";
 import { generateReport } from "./pdf-report";
 import { sendReportEmail } from "./email";
 
@@ -7,15 +7,17 @@ interface EvaluationInput {
   email: string;
   buffer: Buffer;
   fileName: string;
+  projectType: ProjectType;
 }
 
 export async function processEvaluation({
   email,
   buffer,
   fileName,
+  projectType,
 }: EvaluationInput): Promise<void> {
   console.log(
-    `[EasyApp] Starting evaluation for ${fileName} (${email})`
+    `[EasyApp] Starting evaluation for ${fileName} (${projectType}) (${email})`
   );
 
   // Step 1: Extract text from document
@@ -30,7 +32,7 @@ export async function processEvaluation({
 
   // Step 2: Evaluate with Claude
   console.log("[EasyApp] Sending to Claude for evaluation...");
-  const evaluation = await evaluateApplication(text);
+  const evaluation = await evaluateApplication(text, projectType);
 
   // Step 3: Generate PDF report
   console.log("[EasyApp] Generating PDF report...");

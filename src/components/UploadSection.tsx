@@ -13,8 +13,11 @@ const ACCEPTED_TYPES = [
 const ACCEPTED_EXTENSIONS = [".pdf", ".doc", ".docx"];
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
+type ProjectType = "youth_exchange" | "training_course" | "";
+
 export default function UploadSection() {
   const [email, setEmail] = useState("");
+  const [projectType, setProjectType] = useState<ProjectType>("");
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
@@ -54,7 +57,7 @@ export default function UploadSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !file) return;
+    if (!email || !file || !projectType) return;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -69,6 +72,7 @@ export default function UploadSection() {
     try {
       const formData = new FormData();
       formData.append("email", email);
+      formData.append("projectType", projectType);
       formData.append("file", file);
 
       const res = await fetch("/api/evaluate", {
@@ -116,6 +120,7 @@ export default function UploadSection() {
             setStatus("idle");
             setFile(null);
             setEmail("");
+            setProjectType("");
           }}
           className="mt-6 text-sm text-green-700 underline hover:text-green-900"
         >
@@ -144,6 +149,41 @@ export default function UploadSection() {
         <p className="text-xs text-gray-400 mt-1.5">
           We&apos;ll send your evaluation report to this email address.
         </p>
+      </div>
+
+      {/* Project type selector */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Project Type
+        </label>
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() => setProjectType("youth_exchange")}
+            className={`p-3 rounded-xl border-2 text-left transition-all ${
+              projectType === "youth_exchange"
+                ? "border-brand-dark bg-brand-50"
+                : "border-gray-200 hover:border-gray-300"
+            }`}
+          >
+            <p className={`text-sm font-medium ${projectType === "youth_exchange" ? "text-brand-dark" : "text-gray-900"}`}>
+              Youth Exchange
+            </p>
+          </button>
+          <button
+            type="button"
+            onClick={() => setProjectType("training_course")}
+            className={`p-3 rounded-xl border-2 text-left transition-all ${
+              projectType === "training_course"
+                ? "border-brand-dark bg-brand-50"
+                : "border-gray-200 hover:border-gray-300"
+            }`}
+          >
+            <p className={`text-sm font-medium ${projectType === "training_course" ? "text-brand-dark" : "text-gray-900"}`}>
+              Training Course
+            </p>
+          </button>
+        </div>
       </div>
 
       {/* File upload area */}
@@ -227,7 +267,7 @@ export default function UploadSection() {
       {/* Submit button */}
       <button
         type="submit"
-        disabled={!email || !file || status === "uploading"}
+        disabled={!email || !projectType || !file || status === "uploading"}
         className="w-full py-4 rounded-xl font-semibold text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]"
         style={{
           background: "linear-gradient(135deg, #3C3CE6 0%, #66C7FF 100%)",
