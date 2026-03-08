@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
             product_data: {
               name: "Erasmus+ Application Evaluation",
               description:
-                "Detailed evaluation report with section scores, criterion-by-criterion feedback, and improvement points. — VAT exempt under the Dutch Small Business Scheme (KOR), Article 25 Dutch VAT Act 1968, and the EU Small Business Scheme (EU-KOR), EU Directive 2020/285. VAT rate: 0%.",
+                "Detailed evaluation report with section scores, criterion-by-criterion feedback, and improvement points.",
             },
             unit_amount: 900, // €9.00
           },
