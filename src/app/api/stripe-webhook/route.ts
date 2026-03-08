@@ -32,8 +32,8 @@ export async function POST(request: NextRequest) {
     const { fileKey, email, projectType } = session.metadata || {};
 
     if (!fileKey || !email || !projectType) {
-      console.error("[EasyApp] Webhook missing metadata:", session.metadata);
-      return NextResponse.json({ error: "Missing metadata." }, { status: 400 });
+      // Not an EasyApplications checkout — ignore silently (e.g. EasyReimburse)
+      return NextResponse.json({ received: true });
     }
 
     const pending = await retrievePending(fileKey);
