@@ -2,18 +2,19 @@ import UploadSection from "./UploadSection";
 
 export default function Hero() {
   return (
-    <section
-      className="relative overflow-hidden"
-      style={{
-        background: "linear-gradient(135deg, #3C3CE6 0%, #66C7FF 100%)",
-      }}
-    >
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-white/5" />
-        <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-white/5" />
-        <div className="absolute top-1/3 left-1/4 w-48 h-48 rounded-full bg-white/3" />
-      </div>
+    <section className="relative overflow-hidden">
+      {/* Background image with gradient overlay */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/erasmus bridge.png')" }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(60, 60, 230, 0.85) 0%, rgba(102, 199, 255, 0.80) 100%)",
+        }}
+      />
 
       <div className="relative z-1 max-w-7xl mx-auto px-6 pt-28 pb-16 md:pb-20">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">

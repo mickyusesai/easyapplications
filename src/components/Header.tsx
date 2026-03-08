@@ -8,7 +8,12 @@ export default function Header() {
           <Logo className="w-9 h-9 rounded-xl" />
           <span className="text-xl font-semibold tracking-tight">
             <span className="text-white">Easy</span>
-            <span className="text-white/70">Applications</span>
+            <span
+              className="bg-clip-text text-transparent"
+              style={{ backgroundImage: "linear-gradient(135deg, #3C3CE6 0%, #66C7FF 100%)" }}
+            >
+              Applications
+            </span>
           </span>
         </div>
         <a
