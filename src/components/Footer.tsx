@@ -1,4 +1,5 @@
 import Logo from "./Logo";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -17,9 +18,20 @@ export default function Footer() {
               </span>
             </span>
           </div>
-          <p className="text-sm">
-            &copy; {new Date().getFullYear()} EasyApplications.
-          </p>
+          <div className="flex items-center gap-6 text-sm">
+            <Link href="/privacy" className="hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:text-white transition-colors">
+              Terms of Service
+            </Link>
+            <a href="mailto:contact@easyapplications.ai" className="hover:text-white transition-colors">
+              contact@easyapplications.ai
+            </a>
+          </div>
+        </div>
+        <div className="mt-8 text-center text-sm">
+          <p>&copy; {new Date().getFullYear()} EasyApplications.</p>
         </div>
       </div>
     </footer>
