@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing metadata." }, { status: 400 });
     }
 
-    const pending = retrievePending(fileKey);
+    const pending = await retrievePending(fileKey);
     if (!pending) {
       console.error("[EasyApp] No pending evaluation found for key:", fileKey);
       return NextResponse.json(

@@ -1,39 +1,98 @@
 import { randomUUID } from "crypto";
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from "@aws-sdk/client-s3";
 import type { ProjectType } from "./claude";
 
-interface PendingEvaluation {
+interface PendingMetadata {
   email: string;
   projectType: ProjectType;
-  buffer: Buffer;
   fileName: string;
-  createdAt: number;
 }
 
-const store = new Map<string, PendingEvaluation>();
+const BUCKET = "easyapplications";
 
-const TTL_MS = 60 * 60 * 1000; // 1 hour
-
-function cleanup() {
-  const now = Date.now();
-  for (const [key, entry] of store) {
-    if (now - entry.createdAt > TTL_MS) {
-      store.delete(key);
-    }
-  }
+function getR2() {
+  return new S3Client({
+    region: "auto",
+    endpoint: process.env.R2_ENDPOINT!,
+    credentials: {
+      accessKeyId: process.env.R2_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
+    },
+  });
 }
 
-export function storePending(data: Omit<PendingEvaluation, "createdAt">): string {
-  cleanup();
+export async function storePending(
+  data: { email: string; projectType: ProjectType; buffer: Buffer; fileName: string }
+): Promise<string> {
   const key = randomUUID();
-  store.set(key, { ...data, createdAt: Date.now() });
+  const r2 = getR2();
+
+  const metadata: PendingMetadata = {
+    email: data.email,
+    projectType: data.projectType,
+    fileName: data.fileName,
+  };
+
+  // Upload metadata manifest and file in parallel
+  await Promise.all([
+    r2.send(
+      new PutObjectCommand({
+        Bucket: BUCKET,
+        Key: `pending/${key}/metadata.json`,
+        Body: JSON.stringify(metadata),
+        ContentType: "application/json",
+      })
+    ),
+    r2.send(
+      new PutObjectCommand({
+        Bucket: BUCKET,
+        Key: `pending/${key}/${data.fileName}`,
+        Body: data.buffer,
+        ContentType: "application/octet-stream",
+      })
+    ),
+  ]);
+
   return key;
 }
 
-export function retrievePending(key: string): Omit<PendingEvaluation, "createdAt"> | null {
-  cleanup();
-  const entry = store.get(key);
-  if (!entry) return null;
-  store.delete(key);
-  const { createdAt: _, ...data } = entry;
-  return data;
+export async function retrievePending(
+  key: string
+): Promise<{ email: string; projectType: ProjectType; buffer: Buffer; fileName: string } | null> {
+  const r2 = getR2();
+
+  try {
+    // First get the metadata to know the file name
+    const manifestRes = await r2.send(
+      new GetObjectCommand({
+        Bucket: BUCKET,
+        Key: `pending/${key}/metadata.json`,
+      })
+    );
+    const metadata: PendingMetadata = JSON.parse(
+      await manifestRes.Body!.transformToString()
+    );
+
+    // Then download the actual file
+    const fileRes = await r2.send(
+      new GetObjectCommand({
+        Bucket: BUCKET,
+        Key: `pending/${key}/${metadata.fileName}`,
+      })
+    );
+    const bytes = await fileRes.Body!.transformToByteArray();
+
+    return {
+      email: metadata.email,
+      projectType: metadata.projectType as ProjectType,
+      buffer: Buffer.from(bytes),
+      fileName: metadata.fileName,
+    };
+  } catch {
+    return null;
+  }
 }

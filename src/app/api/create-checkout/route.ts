@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     const fileName = file.name;
 
     // Store file data for retrieval after payment
-    const fileKey = storePending({
+    const fileKey = await storePending({
       email,
       projectType: projectType as "youth_exchange" | "training_course",
       buffer,
