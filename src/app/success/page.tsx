@@ -30,15 +30,22 @@ export default function SuccessPage() {
               </svg>
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-              Payment Received — Evaluation Started
+              Your Evaluation Is Underway
             </h1>
-            <p className="text-gray-600 mb-3 leading-relaxed">
-              Your application is now being evaluated against real National
-              Agency criteria. You&apos;ll receive a detailed PDF evaluation
-              report by email within approximately 10 minutes.
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              Our AI is now reading your full application and assessing it
+              against the same criteria that National Agency evaluators use.
+              It scores each criterion, identifies strengths and weaknesses,
+              and writes specific feedback on what to improve.
+            </p>
+            <p className="text-gray-600 mb-4 leading-relaxed">
+              This takes up to <strong>10 minutes</strong>. Once the evaluation
+              is complete, you&apos;ll receive a detailed PDF report by email
+              with section scores, criterion-by-criterion ratings, and
+              prioritised improvement points.
             </p>
             <p className="text-gray-500 text-sm mb-8">
-              Check your inbox (and spam folder, just in case).
+              Keep an eye on your inbox — and check your spam folder, just in case.
             </p>
             <Link
               href="/"
