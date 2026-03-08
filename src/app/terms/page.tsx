@@ -96,10 +96,10 @@ export default function TermsOfService() {
                 experience technical issues that prevent delivery of your
                 report, please contact us at{" "}
                 <a
-                  href="mailto:contact@easyapplications.ai"
+                  href="mailto:micky@easyreimburse.ai"
                   className="text-brand-600 underline"
                 >
-                  contact@easyapplications.ai
+                  micky@easyreimburse.ai
                 </a>{" "}
                 and we will resolve the issue or provide a refund.
               </p>
@@ -171,10 +171,10 @@ export default function TermsOfService() {
               <p>
                 For any questions about these terms, contact us at{" "}
                 <a
-                  href="mailto:contact@easyapplications.ai"
+                  href="mailto:micky@easyreimburse.ai"
                   className="text-brand-600 underline"
                 >
-                  contact@easyapplications.ai
+                  micky@easyreimburse.ai
                 </a>
                 .
               </p>

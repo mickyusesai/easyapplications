@@ -27,10 +27,10 @@ export default function PrivacyPolicy() {
                 provides an AI-powered evaluation service for Erasmus+ project
                 applications. You can reach us at{" "}
                 <a
-                  href="mailto:contact@easyapplications.ai"
+                  href="mailto:micky@easyreimburse.ai"
                   className="text-brand-600 underline"
                 >
-                  contact@easyapplications.ai
+                  micky@easyreimburse.ai
                 </a>
                 .
               </p>
@@ -147,10 +147,10 @@ export default function PrivacyPolicy() {
                 data or object to its processing. To exercise any of these
                 rights, contact us at{" "}
                 <a
-                  href="mailto:contact@easyapplications.ai"
+                  href="mailto:micky@easyreimburse.ai"
                   className="text-brand-600 underline"
                 >
-                  contact@easyapplications.ai
+                  micky@easyreimburse.ai
                 </a>
                 .
               </p>
@@ -185,10 +185,10 @@ export default function PrivacyPolicy() {
                 For any questions about this privacy policy or your data, email
                 us at{" "}
                 <a
-                  href="mailto:contact@easyapplications.ai"
+                  href="mailto:micky@easyreimburse.ai"
                   className="text-brand-600 underline"
                 >
-                  contact@easyapplications.ai
+                  micky@easyreimburse.ai
                 </a>
                 .
               </p>

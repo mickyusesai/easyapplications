@@ -25,8 +25,8 @@ export default function Footer() {
             <Link href="/terms" className="hover:text-white transition-colors">
               Terms of Service
             </Link>
-            <a href="mailto:contact@easyapplications.ai" className="hover:text-white transition-colors">
-              contact@easyapplications.ai
+            <a href="mailto:micky@easyreimburse.ai" className="hover:text-white transition-colors">
+              micky@easyreimburse.ai
             </a>
           </div>
         </div>
