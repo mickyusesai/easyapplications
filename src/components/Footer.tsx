@@ -18,8 +18,7 @@ export default function Footer() {
             </span>
           </div>
           <p className="text-sm">
-            &copy; {new Date().getFullYear()} EasyApplications. Part of the Easy
-            product family.
+            &copy; {new Date().getFullYear()} EasyApplications.
           </p>
         </div>
       </div>

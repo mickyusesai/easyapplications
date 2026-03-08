@@ -22,19 +22,19 @@ export default function Hero() {
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-8">
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
               <span className="text-white/90 text-sm font-medium">
-                AI-Powered Feedback in Minutes
+                Know Your Score Before You Submit
               </span>
             </div>
 
             <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-              Get Expert Feedback on Your{" "}
-              <span className="text-white/90">Erasmus+ Applications</span>
+              Don&apos;t Wait 4 Months to Find Out Your Application Wasn&apos;t Strong Enough
             </h1>
 
             <p className="text-lg text-white/80 max-w-xl mb-8 leading-relaxed">
-              Stop waiting months for national agency feedback. Upload your
-              Youth Exchange or Training Course application and receive a
-              detailed evaluation report in minutes — not months.
+              When your Erasmus+ application is rejected, you lose more than a
+              project &mdash; you lose six months before you can try again.
+              Upload your draft before you submit, see where it&apos;s strong
+              and where it&apos;s weak, and fix the gaps while you still can.
             </p>
 
             <div className="hidden lg:flex items-center gap-6 text-white/60 text-sm">
@@ -54,7 +54,7 @@ export default function Hero() {
                 <svg className="w-5 h-5 text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
-                ~10 min turnaround
+                Results in ~10 minutes
               </div>
             </div>
           </div>

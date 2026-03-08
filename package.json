@@ -16,7 +16,8 @@
     "pdfkit": "^0.17.2",
     "postmark": "^4.0.7",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "stripe": "^20.4.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
