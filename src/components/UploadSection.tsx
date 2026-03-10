@@ -8,9 +8,11 @@ const ACCEPTED_TYPES = [
   "application/pdf",
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/rtf",
+  "text/rtf",
 ];
 
-const ACCEPTED_EXTENSIONS = [".pdf", ".doc", ".docx"];
+const ACCEPTED_EXTENSIONS = [".pdf", ".doc", ".docx", ".rtf"];
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 type ProjectType = "youth_exchange" | "training_course" | "";
@@ -27,7 +29,7 @@ export default function UploadSection() {
   const validateFile = (f: File): string | null => {
     const ext = "." + f.name.split(".").pop()?.toLowerCase();
     if (!ACCEPTED_TYPES.includes(f.type) && !ACCEPTED_EXTENSIONS.includes(ext)) {
-      return "Only PDF and DOC/DOCX files are accepted.";
+      return "Only PDF, DOC/DOCX, and RTF files are accepted.";
     }
     if (f.size > MAX_FILE_SIZE) {
       return "File must be under 10MB.";
@@ -180,7 +182,7 @@ export default function UploadSection() {
           <input
             ref={fileInputRef}
             type="file"
-            accept=".pdf,.doc,.docx"
+            accept=".pdf,.doc,.docx,.rtf"
             onChange={(e) => {
               const selected = e.target.files?.[0];
               if (selected) handleFile(selected);

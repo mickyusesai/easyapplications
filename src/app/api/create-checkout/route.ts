@@ -10,9 +10,11 @@ const ALLOWED_TYPES = [
   "application/pdf",
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/rtf",
+  "text/rtf",
 ];
 
-const ALLOWED_EXTENSIONS = ["pdf", "doc", "docx"];
+const ALLOWED_EXTENSIONS = ["pdf", "doc", "docx", "rtf"];
 
 export async function POST(request: NextRequest) {
   try {
