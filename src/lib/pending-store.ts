@@ -3,6 +3,7 @@ import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
+  ListObjectsV2Command,
 } from "@aws-sdk/client-s3";
 import type { ProjectType } from "./claude";
 
@@ -95,4 +96,57 @@ export async function retrievePending(
   } catch {
     return null;
   }
+}
+
+export interface PendingEntry {
+  fileKey: string;
+  email: string;
+  projectType: string;
+  fileName: string;
+  uploadedAt: string;
+}
+
+export async function listPending(): Promise<PendingEntry[]> {
+  const r2 = getR2();
+
+  const res = await r2.send(
+    new ListObjectsV2Command({
+      Bucket: BUCKET,
+      Prefix: "pending/",
+      Delimiter: "/",
+    })
+  );
+
+  const prefixes = res.CommonPrefixes?.map((p) => p.Prefix!) ?? [];
+  // Extract keys like "pending/uuid/" → "uuid"
+  const keys = prefixes.map((p) => p.replace("pending/", "").replace("/", ""));
+
+  const entries: PendingEntry[] = [];
+
+  for (const key of keys) {
+    try {
+      const metaRes = await r2.send(
+        new GetObjectCommand({
+          Bucket: BUCKET,
+          Key: `pending/${key}/metadata.json`,
+        })
+      );
+      const metadata: PendingMetadata = JSON.parse(
+        await metaRes.Body!.transformToString()
+      );
+      entries.push({
+        fileKey: key,
+        email: metadata.email,
+        projectType: metadata.projectType,
+        fileName: metadata.fileName,
+        uploadedAt: metaRes.LastModified?.toISOString() ?? "unknown",
+      });
+    } catch {
+      // Skip broken entries
+    }
+  }
+
+  // Sort newest first
+  entries.sort((a, b) => b.uploadedAt.localeCompare(a.uploadedAt));
+  return entries;
 }
